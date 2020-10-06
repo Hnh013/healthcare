@@ -1,0 +1,176 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+
+<section>
+
+
+<div class="jumbotron">
+
+Profiles for Approval
+
+<hr>
+
+<div class="container my-5">
+
+<div class="row">
+	<div class="col-md-9">
+
+{% if user.profile.user_role == 'Senior Doctor' %}
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+<table class="table table-light">
+<tr>
+	<th>Doctor Name</th>
+	<th>Broad Disease</th>
+	<th>Narrow Disease</th>
+	<th>Senior Approval</th>
+	<th>Action</th>
+</tr>
+{% for p in profiles %}
+<tr>
+	<td>{{p.profile.user.first_name}} {{p.profile.user.last_name}}</td>
+	<td>{{p.broad}}</td>
+	<td>{{p.narrow}}</td>
+	
+	<td>{{p.approval1}}</td>
+
+	<td><a href="{% url 'seniorapproval' p.id %}" class="btn btn-success btn-sm">Give Approval</a></td>
+
+
+</tr>
+
+
+{% endfor %}
+</table>
+</div>
+
+{% endif %}
+
+
+
+{% if user.profile.user_role == 'Health Expert' %}
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+<table class="table table-light">
+<tr>
+	<th>Doctor Name</th>
+	<th>Broad Disease</th>
+	<th>Narrow Disease</th>
+	<th>Senior Approval</th>
+	<th>Expert Approval</th>
+	<th>Action</th>
+</tr>
+{% for p in profiles %}
+<tr>
+	<td>{{p.profile.user.first_name}} {{p.profile.user.last_name}}</td>
+	<td>{{p.broad}}</td>
+	<td>{{p.narrow}}</td>
+	
+	<td>{{p.approval1}}</td>
+	<td>{{p.approval2}}</td>
+
+	<td><a href="{% url 'expertapproval' p.id %}" class="btn btn-success btn-sm">Give Approval</a></td>
+
+
+</tr>
+
+
+{% endfor %}
+</table>
+</div>
+
+{% endif %}
+
+
+
+
+
+
+{% if user.is_superuser %}
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+<table class="table table-light">
+<tr>
+	<th>Doctor Name</th>
+	<th>Broad Disease</th>
+	<th>Narrow Disease</th>
+	<th>Senior Approval</th>
+	<th>Expert Approval</th>
+	<th>Action</th>
+</tr>
+{% for p in profiles %}
+<tr>
+	<td>{{p.profile.user.first_name}} {{p.profile.user.last_name}}</td>
+	<td>{{p.broad}}</td>
+	<td>{{p.narrow}}</td>
+	
+	<td>{{p.approval1}}</td>
+	<td>{{p.approval2}}</td>
+	<td><a class="btn btn-info" href="{% url 'adddoctor' p.id %}">Add Doctor</a></td>
+
+
+</tr>
+
+
+
+{% endfor %}
+</table>
+</div>
+
+{% endif %}
+
+</div>
+
+<div class="col-md-3">
+
+<h5>Approved Doctors</h5><hr>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+	<table class="table table-striped">
+	{% for p in profiles %}
+
+	{% if p.approval1 == 'Approved' and p.approval2 == 'Approved' %}
+	
+	
+		<tr><td>Dr. {{p.profile.user.first_name}} {{p.profile.user.last_name}}</td></tr>
+	
+   
+	
+
+
+	{% endif %}
+
+	{% endfor %}
+	</table>
+</div>
+</div>
+
+<div class="col-md-12">
+
+<h5>Doctors in List</h5><hr>
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
+	
+<table class="table table-striped">
+	{% for p in doctors %}
+
+	<tr><td>Dr. {{p.name}} ({{p.broad}})</td></tr>
+
+	{% endfor %}
+	</table>
+</div>
+</div>
+	
+
+
+	
+</div>
+
+
+</div>
+</div>
+</div>
+
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,319 @@
+{% load static %}
+
+
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" href="{% static 'css/staffdashboard.css' %}">
+    <title>Hello, world!</title>
+    <style>
+
+      #total-orders{
+        background-color:  #4cb4c7;
+      }
+      #orders-delivered{
+        background-color:  #2abecc;
+      }
+      #orders-pending{
+        background-color:  #7CD1C0;
+      }
+
+          .fb {
+  background-color: #3B5998;
+  color: white;
+
+}
+.google {
+  background-color: #dd4b39;
+  color: white;
+}
+
+
+.my-custom-scrollbar {
+position: relative;
+height: 200px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+    </style>
+  </head>
+  <body>
+
+    <!-------- NAVBAR ----------------------------------------------------------------------------------------------------->
+
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'index' %}">MED!CO</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Our Partners
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Hospitals</a>
+          <a class="dropdown-item" href="#">Laboratories</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">NGOs</a>
+        </div>
+      </li>
+      {% if user.is_authenticated %}
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard <span class="sr-only">(current)</span></a>
+      </li>
+
+      {% if user.profile.doctorprofile%}
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'staffdashboard' %}"> Staff Dashboard <span class="sr-only">(current)</span></a>
+      </li>
+
+      {% endif %}
+
+
+      
+
+      {% if user.is_superuser %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'admindashboard' %}"> Admin Dashboard <span class="sr-only">(current)</span></a>
+      </li>
+      {% endif %}
+      {% endif %}
+      <li class="nav-item">
+       <!--- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> --->
+      </li>
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      
+       {% if user.is_authenticated %}
+       <button class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#LogoutModal">LOGOUT</button>
+       <a href="{% url 'change_password' %}" class="btn btn-link my-2 my-sm-0">Change Password</a>
+       {% else %}
+       <div class="btn-group btn-group-toggle" data-toggle="buttons">
+  
+ 
+
+      <button class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#LoginModal">LOGIN</button>
+    
+      <a class="btn btn-warning my-2 my-sm-0" type="button" href="{% url 'registeruser' %}">REGISTER</a>
+      {% endif %}
+</div>    
+  </div>
+</nav>
+
+ 
+
+<!-- LoginModal -->
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h5 class="modal-title" id="LoginModalLabel">LOGIN</h5>
+       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-inline" method="POST" action ="{% url 'loginuser' %}">
+          {% csrf_token %}
+  <div class="form-group mb-2">
+    <label for="username" class="sr-only">Username</label>
+    <input type="text" class="form-control-plaintext" name="username" id="username" placeholder="Username">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="password" class="sr-only">Password</label>
+    <input type="password" name="password" class="form-control-plaintext" id="password" placeholder="Password">
+  </div>
+
+  {{ form.errors }}
+
+      </div>
+       <a href="{% url 'reset_password' %}" class="btn btn-link">I Forgot my password!</button>
+      <div class="modal-footer">
+        <div class="mt-4">
+          <div class="d-flex justify-content-center links">
+                   <a href="{% url 'social:begin' 'facebook' %}" class="fb btn">
+          <i class="fa fa-facebook fa-fw"></i> Sign Up with Facebook
+         </a>
+       
+      
+      &nbsp;&nbsp;&nbsp;
+
+
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google btn"><i class="fa fa-google fa-fw">
+          </i>&nbsp;&nbsp; Sign Up with Gmail
+        </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        </div></div>
+
+         
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Log In!</button></div></div>
+</form>        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- LogoutModal -->
+<div class="modal fade" id="LogoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h5 class="modal-title" id="LogoutModalLabel">LOGOUT</h5>
+       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Are You Sure you want to Log Out ?</h5>
+      </div>
+      <div class="modal-footer">
+     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a type="submit" class="btn btn-danger" href="{% url 'logoutuser' %}">Yes,Log me Out!!</a>
+           
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+    <!----------- NAVBAR END -------------------------------------------------------------------------------------------------->
+
+
+
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="container py-5">
+  <div class="row">
+    <div class="col-12 col-md">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="img" viewBox="0 0 24 24" focusable="false"><title>Product</title><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/></svg>
+      <small class="d-block mb-3 text-muted">&copy; 2017-2020</small>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Services</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="{% url 'choose' %}">Book Meeting</a></li>
+        <li><a class="text-muted" href="{% url 'selfassess' %}">Self Assess</a></li>
+        <li><a class="text-muted" href="{% url 'blog' %}">Read Blog</a></li>
+    
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>About</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Doctors</a></li>
+        <li><a class="text-muted" href="#">Hospitals</a></li>
+        <li><a class="text-muted" href="#">NGOs</a></li>
+        
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Resources</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Business</a></li>
+        <li><a class="text-muted" href="#">Education</a></li>
+        <li><a class="text-muted" href="#">Government</a></li>
+        <li><a class="text-muted" href="#">Gaming</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Connect With Us</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="{% url 'feedback' %}">Feedback</a></li>
+        <li><a class="text-muted" href="{% url 'contact' %}">Contact Us</a></li>
+       
+      </ul>
+    </div>
+  
+  <div class="col-12 col-md">
+  <p></p>
+  <p>
+    <a href="#">Back to top</a>
+  </p>
+</div>
+  </div>
+</footer>
+
+
+   <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+   
+   
+    $("#id_broad").change(function () {
+        const url = $("#SearchDocForm").attr("data-cities-url");  // get the url of the `load_cities` view
+        const broadId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'broad_id': broadId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_doctor").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (city) {
+                    html_data += `<option value="${city.id}">${city.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_city").html(html_data);
+                */
+            }
+        });
+
+    });
+
+  </script>
+
+  </body>
+
+
+
+
+</html>

@@ -1,0 +1,128 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+
+
+
+
+<div class="container my-8">
+<h4 class="display-4 font-italic">{{post.title}}</h4>
+By <strong>{{post.author.profile.user.first_name}} {{post.author.profile.user.last_name}}</strong>
+
+<hr>
+  <div class="row">
+     <div class="col-md-4">
+      <img src="{{post.image.url}}" height="180" width="180" style="border-radius: 500px;">
+    </div>
+
+  
+  <div class="col-md-8">
+  <p class="lead my-3">{{post.body}}</p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <h5>Likes</h5>
+    {% if user.is_authenticated %}
+  <form action="{% url 'like_post' post.id %}" method= "POST">
+    {% csrf_token %}
+
+    {% if liked %}
+
+    <button type="submit", name="post_id", value="{{post.id}}"class="btn btn-danger btn-sm mb-2">Unlike</button>
+
+    {% else %}
+
+    <button type="submit", name="post_id", value="{{post.id}}"class="btn btn-primary btn-sm mb-2">Like</button>
+    {% endif %}
+
+
+     - {{likes}} Likes
+  </form>
+   {% else %}
+  Log In to Like this Post <a href="{% url 'index' %}">Login Now</a> - {{likes}} Likes
+   {% endif %}
+ </div>
+ <div class="col-md-8">
+ <h5>Comments...</h5>
+
+{% if user.is_authenticated %}
+ 
+
+  {% if not comments %}
+  <p>No Comments Yet ! Be the first to add one...
+
+       <form action="{% url 'comment_post' %}" method="POST">{% csrf_token %}
+        <div class="form-group">
+    <input type="hidden" name="post_id" value="{{post.id}}">
+     <label for="body">Add A comment...</label>
+    <textarea class="form-control" name="body" id="body" placeholder="Enter Post Comment here..." rows="3" required></textarea>
+  </div>
+   <button type="submit" class="btn btn-primary btn-sm mb-2">Post Comment!</button>
+</form>
+     
+      
+
+
+  </p>
+
+
+
+
+
+  {% else %}
+  <p>{{numcom}} comments</p>
+
+   {% for comment in comments %}
+   <p><h5>"{{comment.body}}"</h5><strong>{{comment.name}}</strong> - <i>{{comment.date}}</i></p>
+   {% endfor %}
+   
+       <form action="{% url 'comment_post' %}" method="POST">{% csrf_token %}
+        <div class="form-group">
+    <input type="hidden" name="post_id" value="{{post.id}}">
+    <label for="body">Add A comment...</label>
+    <textarea class="form-control" name="body" id="body" placeholder="Enter Post Comment here..." rows="3" required></textarea>
+  </div>
+   <button type="submit" class="btn btn-primary btn-sm mb-2">Post Comment!</button>
+</form>
+     
+
+
+   </p>
+
+
+      
+  
+
+  {% endif %}
+
+
+  {% else %}
+
+
+   Log In to Comment on this Post <a href="{% url 'index' %}">Login Now</a> - {{numcom}} comments
+
+
+ 
+  {% for comment in comments %}
+   <p><h5>"{{comment.body}}"</h5><strong>{{comment.name}}</strong> - <i>{{comment.date}}</i></p>
+   {% endfor %}
+
+  {% endif %}
+
+  
+ </div>
+  
+</div>
+
+  
+</div>
+   
+
+
+{% endblock %}

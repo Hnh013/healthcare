@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+
+<div class="container">
+    <p align="center">
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+</head>
+<body>
+    <form action="{% url 'recharge' %}" method="GET">
+        <script
+            src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="rzp_test_qvsBaHe2xMjIVU"
+            data-amount="10000"
+            data-name="{{user.username}}"
+            data-description="{{user.username}}"
+            data-image="vk.jpg"
+            data-netbanking="true"
+            data-description="date : {{date}}, time : {{time}}"
+            data-prefill.name="{{user.username}}"
+            data-prefill.email="{{user.email}}"
+            data-prefill.contact="{{user.profile.phone}}"
+            data-notes.shopping_order_id="{{user.id}}">
+        </script>
+        <input type="hidden" name="shopping_order_id" value="{{user.id}}">
+    </form>
+</body>
+
+</html>
+</p>
+</div>
+
+
+
+{% endblock %}

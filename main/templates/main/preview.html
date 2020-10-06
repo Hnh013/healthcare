@@ -1,0 +1,110 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class="container h-100">
+		<div class="d-flex justify-content-center h-100">
+			<div class="user_card">
+				<div class="d-flex justify-content-center">
+					<h3 id="form-title">Preview of Meeting Details</h3>
+				</div>
+				<div class="d-flex justify-content-center form_container">
+
+					<form method="" action="">
+
+						
+
+						<input type="hidden" id="schedule_id" name="schedule_id" value="{{schedule.id}}">
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+								
+							</div>
+<input type="text" class="form-control" name="fullname" id="fullname" placeholder="{{fullname}}">
+						</div>
+								
+							
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text" readonly class="form-control" name="doctor" id="doctor" value="{{doctor}}">								
+							</div>
+						
+						</div>
+						
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text" readonly class="form-control" name="date" id="date" value="{{date}}">								
+							</div>
+							
+						</div>
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text" readonly class="form-control" name="time" id="time" value={{time}}>
+							</div>
+							
+						</div>
+
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text"  class="form-control" name="phone" id="phone" value="{{phone}}">
+							</div>
+							
+						</div>
+
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text"  class="form-control" name="email" id="email" value="{{email}}">
+							</div>
+							
+						</div>
+
+				   	
+					</form>
+				</div>
+               
+
+			
+		
+				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+                
+<a class="btn btn-primary" href="{% url 'walletpay' schedule_id %}">Pay with Wallet</a>
+
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+</head>
+<body>
+    <form action="{% url 'app_charge' %}" method="GET">
+        <script
+            src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="rzp_test_qvsBaHe2xMjIVU"
+            data-amount="5100"
+            data-name="{{fullname}}"
+            data-description="{{fullname}}"
+            data-image="vk.jpg"
+            data-netbanking="true"
+            data-description="date : {{date}}, time : {{time}}"
+            data-prefill.name="{{fullname}}"
+            data-prefill.email="{{email}}"
+            data-prefill.contact="{{phone}}"
+            data-notes.shopping_order_id="{{schedule_id}}">
+        </script>
+        <input type="hidden" name="shopping_order_id" value="{{schedule_id}}">
+    </form>
+</body>
+
+</html>
+
+
+{{  data  }}
+
+{% endblock %}

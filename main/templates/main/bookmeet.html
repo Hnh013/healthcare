@@ -1,0 +1,116 @@
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags%}
+{% block content %}
+
+
+<div class="container h-100">
+		<div class="d-flex justify-content-center h-100">
+			<div class="user_card">
+				<div class="d-flex justify-content-center">
+					<h3 id="form-title">Book Your Meeting </h3>
+				</div>
+				<div class="d-flex justify-content-center form_container">
+
+					<form method="POST" action="{% url 'preview' %}">
+
+						{% csrf_token %}
+
+						<input type="hidden" id="schedule_id" name="schedule_id" value="{{schedule.id}}">
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+							{% if user.is_authenticated %}	
+							</div>
+<input type="text" class="form-control" name="fullname" id="fullname" value="{{user.first_name}} {{user.last_name}}">
+						</div>
+						{% else %}
+							</div>
+						
+<input type="text" class="form-control" name="fullname" id="fullname" placeholder="Enter Patient Name...">
+						</div>
+						{% endif %}
+								
+							
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text" readonly class="form-control" name="doctor" id="doctor" value="Dr {{schedule.docprof.profile.user.first_name}} {{schedule.docprof.profile.user.last_name}}">								
+							</div>
+						
+						</div>
+						
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text" readonly class="form-control" name="date" id="date" value="{{schedule.date}}">								
+							</div>
+							
+						</div>
+						<div class="form-group mb-2">
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text" readonly class="form-control" name="time" id="time" value={{schedule.time}}>
+							</div>
+							
+						</div>
+
+						<div class="form-group mb-2">
+							{% if user.profile %}
+
+							<div class="input-group-append"><Label></Label><br>
+							
+ <input type="text"  class="form-control" name="phone" id="phone" value="{{user.profile.phone}}">
+							</div>
+							{% else %}
+
+							<div class="input-group-append"><Label></Label><br>
+							
+ <input type="text"  class="form-control" name="phone" id="phone" placeholder="Phone Number">
+							</div>
+							{% endif %}
+						</div>
+						
+
+						<div class="form-group mb-2">
+							{% if user.is_authenticated %}
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text"  class="form-control" name="email" id="email" value="{{user.email}}">
+							</div>
+							{% else %}
+
+							<div class="input-group-append"><Label></Label><br>
+ <input type="text"  class="form-control" name="email" id="email" placeholder="Email">
+							</div>
+							{% endif %}
+						</div>
+
+
+				   		<div class="d-flex justify-content-center mt-3 login_container">
+				 			<input class="btn btn-outline-success" type="submit" value="Pay and confirm">
+				   		</div>
+
+				   			<script>
+						/* Because i didnt set placeholder values in forms.py they will be set here using vanilla Javascript
+		//We start indexing at one because CSRF_token is considered and input field 
+		 */
+
+		//Query All input fields
+		
+	</script>
+					</form>
+				</div>
+               
+
+			
+		
+				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+{% endblock %}

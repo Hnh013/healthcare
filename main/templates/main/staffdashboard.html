@@ -1,0 +1,214 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+{% if user.profile.doctorprofile.approval1 == 'Approved' and user.profile.doctorprofile.approval2 == 'Approved' and  user.profile.user_role != 'Doctor' and user.profile.user_role != 'Patient' %}
+
+<div class="container my-4">
+  <a href="{% url 'approval' %}" class="btn btn-primary btn-lg"> Pending Approvals</a>
+   <a class="btn btn-success btn-lg"> Write Blog</a>
+</div>
+{% endif %}
+
+
+
+{% if user.profile.doctorprofile.approval1 == 'Approved' and user.profile.doctorprofile.approval2 == 'Approved' and  user.profile.user_role != 'Patient' %}
+
+
+<div class="container my-4">
+{% include 'main/status.html' %}
+</div>
+
+<div class="container my-4">
+<div class="row">
+	<div class="col-md-5">
+		<h5>Recent Patients</h5>
+		<hr>
+		<div class="card card-body">
+			{% if user.profile.user_role == 'Health Expert' %}
+			{% else %}
+	<button class="btn-success btn-sm btn-block" type="button" data-toggle="modal" data-target="#CreatePatientModal">Create Patient</button>
+	{% endif %}
+	        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+			<table class="table table-sm" >
+				<tr>
+					<th>Patients</th>
+					
+					<th></th>
+				</tr>
+				{% if user.profile.user_role == 'Health Expert' %}
+
+				{% for p in all_patients %}
+				<tr>
+					<td>{{p.name}}</td>
+					
+					<td><a href="{% url 'patientdetail' p.id %}" class="btn btn-outline-info btn-sm">View</a></td>
+					<td><a href="{% url 'editpatient' p.id %}" class="btn btn-outline-warning btn-sm">Edit</a></td>
+					<td><a href="{% url 'deletepatient' p.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+				</tr>
+
+
+
+				{% endfor %}
+
+				{% else %}
+				{% for p in patient %}
+				<tr>
+					<td>{{p.name}}</td>
+					
+					<td><a href="{% url 'patientdetail' p.id %}" class="btn btn-outline-info btn-sm">View</a></td>
+					<td><a href="{% url 'editpatient' p.id %}" class="btn btn-outline-warning btn-sm">Edit</a></td>
+					<td><a href="{% url 'deletepatient' p.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+				</tr>
+
+
+
+				{% endfor %}
+
+
+				{% endif %}
+				
+			</table>
+		</div>
+		</div>
+	</div>
+
+
+
+<!-- Button trigger modal -->
+
+<div class="modal fade" id="CreatePatientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h5 class="modal-title" id="">CREATE PATIENT REPORT</h5>
+       
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'createpatient' %}">{% csrf_token %}
+        <div class="form-group">
+         <label for="exampleFormControlInput1">Name</label>
+          <input type="text" class="form-control" name="name" id="name" placeholder="Enter Patient Name Here ..." required>
+         </div>
+
+        <div class="form-group">
+          <label for="complaint">Complaints</label>
+          <textarea class="form-control" name="complaint" id="complaint" placeholder="Enter Patient Complaints here..." rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="investigation">Investigations</label>
+          <textarea class="form-control" name="investigation" id="investigation" placeholder="Enter investigations here..." rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="examination">Examinations</label>
+          <textarea class="form-control" name="examination" id="examination" placeholder="Enter examinations here..." rows="3" required></textarea>
+        </div>
+         
+      
+        
+      </div>
+      <div class="modal-footer">
+     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary mb-2">Create Patient!</button>
+        </form>   
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+
+
+
+
+	<div class="col-md-7">
+		<h5>LATEST SCHEDULE</h5>
+		<hr>
+		<div class="card card-body">
+			{% if user.profile.user_role == 'Health Expert' %}
+			{% else %}
+			   <a class="btn btn-info btn-sm btn-block" href="{% url 'createschedule' %}">Create Schedule</a>
+
+			    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+			<table class="table table-sm">
+				<tr>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Status</th>
+				
+					<th></th>
+					<th></th>
+				</tr>
+				{% for s in booking %}
+				<tr>
+					<td>{{s.date}}</td><td>{{s.time}}</td><td>{{s.status}}</td>
+				    <td><a class="btn btn-warning btn-sm" href="{% url 'reschedule' s.id %}">Reschedule</a></td>
+				    <td><a class="btn btn-danger btn-sm" href="{% url 'deleteschedule' s.id %}">Cancel</a></td>
+
+				</tr>
+				{% endfor %}
+ 
+				{% endif %}
+
+				
+
+				
+			</table></div>
+		</div>
+	</div>
+
+</div>
+
+{% if user.profile.user_role != Doctor and user.profile.user_role != 'Patient' %}
+
+<div class="container my-4">
+    <div class="row">
+	    <div class="col-md-12">
+		<h5>Recent Blogs</h5>
+		<hr>
+		    <div class="card card-body">
+	        <a class="btn btn-success btn-sm btn-block" href="{% url 'createblog' %}">Create Blog</a>
+	            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+			    <table class="table table-sm" >
+				<tr>
+					<th>Blogs</th>
+					
+					<th></th>
+				</tr>
+				{% for p in blogs %}
+				<tr>
+					<td>{{p.title}}</td>
+					
+					<td><a href="{% url 'blogdetail' p.id %}" class="btn btn-outline-info btn-sm">View</a></td>
+					<td><a href="{% url 'updateblog' p.id %}" class="btn btn-outline-warning btn-sm">Edit</a></td>
+					<td><a href="{% url 'deleteblog' p.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td></tr>
+
+
+
+				{% endfor %}
+
+
+				
+				
+			</table>
+		</div>
+		</div>
+	</div>
+</div></div>
+
+{% endif %}
+{% endif %}
+
+
+
+
+
+{% endblock %}

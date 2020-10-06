@@ -1,0 +1,29 @@
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+
+<div class="jumbotron">
+<h2>Dr. {{docprof.profile.user.first_name}} {{docprof.profile.user.last_name}}</h2> <h5>({{docprof.broad}} Specialist)</h5>
+
+<hr>
+
+
+
+<table class="table table-striped">
+  <tr>
+    <th>DATE</th><th>TIME</th><th>STATUS</th>
+  </tr>
+  {% for t in schedule %}
+  <tr>
+    <td>{{t.date}}</td>
+    <td>{{t.time}}</td>
+    <td>{% if t.status == 'Free' %}<a class="btn btn-success" href="{% url 'bookmeet' t.id %}">{{t.status}}</a>{% else %}<a class="btn btn-danger">{{t.status}}</a>{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

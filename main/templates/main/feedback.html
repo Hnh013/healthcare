@@ -1,0 +1,242 @@
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<meta charset="UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+	<style>
+
+*{
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+
+}
+body{margin: 0;
+	padding: 0;
+	background: linear-gradient(90deg,#0162c8,#55e7fc);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+.container{
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	min-height: 600px;
+	width: 600px;
+	margin: 10px;
+	background: linear-gradient(90deg,#755bea,#ff72c0);
+	box-shadow: 0 0 100px 50px #5bea;
+	border: 2p solid #bea;
+	border-radius: 10px;
+	transition: 10s;
+	overflow: hidden;
+
+
+} 
+h2{
+	font-size: 40px;
+	font-family: 'Oswald', sans-serif;
+	user-select: none;
+	text-transform: uppercase;
+}
+.form{
+	margin: 10px;
+	box-sizing: border-box;
+}
+.user input{
+	color: white;
+	width: 400px;
+	height: 30px;
+	margin-top: 5%; 
+	border: none;
+	background:  transparent;
+	border-bottom: 3px solid #fff;
+	font-size: 20px;
+	outline: none;
+}
+.username{
+	width: 400px;
+	height: 30px;
+	margin-top: 3%; 
+	border: none;
+	background:  transparent;
+	border-bottom: 3px solid #fff;
+	font-size: 20px;
+	outline: none;
+
+}
+.username input:: placeholder{
+	color: #222;
+}
+.username input:: placeholder{
+	color: #222;
+}
+textarea{
+	width:400px;
+	height: 200px;
+	background: linear-gradient(180deg,#5bea,#ffc0);
+	box-shadow: 0 0 20px 4px #303030;
+	resize: none;
+	margin-top: 3%;
+	padding-top: 10px;
+	text-align: center;
+	font-size: 18px; 
+}
+textarea::placeholder{
+	color: #222;
+}
+.sub{
+	margin-top: 15%;
+	position: relative;
+}
+.sub input{
+	font-size: 20px;
+	width: 400px;
+	height: 50px;
+	border-radius: 50px;
+	background: linear-gradient(90deg,#5bea,#ffc0);
+	border: 3px solid #fff;
+	color: #f2f2f2;
+	font-family: 'Trade Winds', cursive;
+}
+.sub input[type='submit']:active{
+	border-color: #755bea;
+}
+.rating{
+	position: absolute;
+	margin-left: 50px;
+	display: flex;
+	flex-direction: row-reverse;
+
+}
+.rating input{
+	display: none;
+
+}
+.rating label img{
+	width: 50px;
+}
+.rating label{
+	position: relative;
+	width: 0px;
+	height: 120px;
+	cursor: pointer;
+	transition: 0.5s;
+	filter: grayscale(1);
+	text-align: center;
+	opacity: 0;
+}
+.rating:hover label{
+	width: 100px;
+	opacity: 0.2;
+}
+.rating input:hover + label,
+.rating input:checked +label{
+	opacity: 1;
+	width: 100px;
+	filter: grayscale(0);
+label h4{
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	white-space: nowrap;
+	opacity: 0;
+	transform: translateY(-50px) scale(0); 
+	padding-top: 0px;
+	transition: 0.5s;
+}
+.rating input:hover + label h4,
+.rating input:checked +label h4{
+	transform: translateY(0) scale(1);
+	opacity: 1;
+}
+	</style>
+    <!-- Bootstrap CSS -->
+   
+	<title> Feedback</title>
+	<link rel="stylesheet"  href="{% static 'css/feedback.css' %}">
+</head>
+<body>
+
+<div class="container">
+	<p align="center">
+	<a href="{% url 'index' %}"><strong class="d-inline-block mb-2 text-light"><h6>
+<i class="fa fa-home fa-2x"></i></h6></strong></a>
+	</p>
+<h4 align="center" class="d-inline-block mb-2 text-light">We Value Your Opinion !</h4>
+<p class="d-inline-block mb-2 text-light"> tellus orcir. Suspendisse auctor tincidunt massa, in hendrerit dui cursus at. Mauris pretium arcu non tellus gravida, consequat ullamcorper arcu tincidunt. Mauris non arcu er
+In volutpat rhoncus leo et euismod. Donec convallis hendrerit nisi vel ultrices. Nunc vestibulum, augue ut laoreet laoreet, teuat ullamcorper arcu tincidunt. Mauris non arcu er
+In volutpat rhoncus leo et euismod. Donec convallis hendrerit nisi vel ultrices. Nunc vestibulum, augue ut laoreet laoreet, tellus orcir. Suspendisse auctor tincidunt massa, in hendrerit dui cursus at. Mauris pretium arcu non tellus gravida, consequat ullamcorper arcu tincidunt. Mauris non arcu er</p>
+<p><img src ="{% static 'images/images/21.jpg' %}" height="220" width="220" style="border-radius: 500px;"></p>
+</div>
+    
+
+<main>
+	<div class="container">
+		<form action="{% url 'feedback' %}" method="POST">
+			{% csrf_token %}
+		<div class="form">
+			<h2> Send FeedBack</h2>
+			<div class="user">
+				<input type="email" required name="email" placeholder=" Enter your Email">
+			</div>
+			<div class="user">
+				<input type="text" required name="username" placeholder=" Enter Username">
+			</div>
+			<textarea name="reply" required placeholder="Enter Your message"></textarea>
+			    <div class="rating">
+				<input type="radio" name="emoji"  value="Satisfactory"id="emoji1" checked>
+				<label for="emoji1">
+					<img src="{% static 'images/smile.png' %}" title="Satisfactory">
+					<h4>Satisfactory</h4>
+				</label>
+					<input type="radio" name="emoji" value="Happy" id="emoji2" checked="">
+				<label for="emoji2">
+					<img src="{% static 'images/satis.png' %}" title="Happy">
+					<h4> Happy</h4>
+				</label>
+				<input type="radio" name="emoji" id="emoji3" value="Good" checked="">
+				<label for="emoji3">
+					<img src="{% static 'images/happy.png' %}" title="Good">
+					<h4> Good</h4>
+				</label>
+				<input type="radio" name="emoji" id="emoji4" value="Not Good" checked="">
+				<label for="emoji4">
+					<img src="{% static 'images/sad.png' %}" title="Not Good">
+					<h4>Not Good</h4>
+				</label>
+				<input type="radio" name="emoji" id="emoji5" value="Excellent" checked="">
+				<label for="emoji5">
+					<img src="{% static 'images/in-love.png' %}" title="Excellent">
+					<h4>Excellent</h4>
+				</label>
+			</div>
+			<div class="sub">
+				<input type="submit" value="Submit">
+				
+			</div>
+			
+		</div>	
+
+
+		</form>
+		
+	</div>
+</main>
+</body>
+</html>
+{% endblock %}

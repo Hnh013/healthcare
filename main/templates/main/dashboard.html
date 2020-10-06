@@ -1,0 +1,171 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+
+<div class="row">
+	<div class="col-md">		    
+	    <div class="card card-body">
+	    	 <table class="table table-light table-sm">
+	        	  <tr><td><strong>Email:</strong></td><td>{{user.email}}</td><td> <a class="btn btn-outline-danger btn-sm btn-block" href="{% url 'update_profile' %}">Update Email</a></td></tr>
+
+	        	  {% if user.profile %}
+
+	        	  <tr><td><strong>Phone:</strong></td><td>{{user.profile.phone}}</td><td> <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'update_phone' %}">Update Phone</a></td></tr>
+
+	        	 {% endif %}
+	        	   
+	        
+	        
+	        </table>
+	    	{% if user.profile %}
+	    	 <a class="btn btn-outline-warning btn-sm btn-block" href="{% url 'update_profile' %}">Update Profile</a>
+
+	    	 {% else %}
+
+	    	 <a class="btn btn-outline-warning btn-sm btn-block" href="{% url 'complete_profile' %}">Complete Profile</a>
+	        	{% endif %}
+	        <a class="btn btn-outline-success btn-sm btn-block" href="{% url 'change_password' %}">Update Password</a>
+	      
+	        
+	         
+		</div>
+	</div>
+
+	<div class="col-md">		    
+	    <div class="card card-body">
+	    	
+	        <h5><img src="{{ user.profile.profile_pic.url }}" height="100" width="100" style="border-radius: 500px;"> {{user.first_name}} {{user.last_name}}</h5></p>
+	        
+	       
+	       <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'update_profile_pic' %}">Update Picture</a>
+	       {% if user.is_superuser %}
+	       <a class="btn btn-outline-warning btn-sm btn-block" href="{% url 'admindashboard' %}">Go to Admin Dashboard</a>
+	       {% endif %}
+	        {% if user.profile.doctorprofile %}
+	       <a class="btn btn-outline-warning btn-sm btn-block" href="{% url 'staffdashboard' %}">Go to Staff Dashboard</a>
+	       {% endif %}
+	       {% if user.profile.user_role != 'Patient' %}
+	       {% if user.profile.doctorprofile %}
+	       <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'update_doctorprofile' %}">Update DoctorProfile</a>
+
+	       {% else %}
+	       <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'complete_doctorprofile' %}">Create DoctorProfile</a>
+
+	       {% endif %}
+	       {% endif %}
+
+
+		</div>
+	</div>
+
+	<div class="col-md">		    
+	    <div class="card card-body">
+	    	{% if user.wallet %}
+	    	<h5>Wallet Balance:</h5>
+	        <hr>
+	        <h2 style="text-align: center; padding: 10px">{{user.wallet.balance}}</h2>	
+	        <h5>Recahrge Wallet <a href="{% url 'rechargewallet' %}">here</a></h5>
+	        {% else %}
+	        <h5>Setup your wallet <a href="{% url 'createwallet' %}">here</a></h5>
+ 
+	        {% endif %}
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+<div class="row">
+	<div class="col-md-6">		    
+	    <div class="card card-body">
+	        
+	        	
+	        <h3><strong class="d-inline-block mb-2 text-primary">Appointments</strong></h3>	
+	        
+	            		
+		    
+		</div>
+	</div>
+	<div class="col-md-6">		    
+	    <div class="card card-body">
+	        
+	        	
+	        <h3><strong class="d-inline-block mb-2 text-success">Diagnosis Report</strong></h3>	
+	        </form>
+	            		
+		    
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+	        <table class="table table-sm">
+	            <tr>
+	                <th>Date</th>
+	            	<th>Time</th>
+	            	<th>Doctor</th>
+	            	<th></th>
+	            	<th></th>
+	            	
+	            </tr>
+	            {% for b in booking %}
+	            <tr>
+	            	<td>{{b.timing.date}}</td><td>{{b.timing.time}}</td><td>Dr. {{b.timing.docprof.profile.user.username}}</td>
+	            	
+	            	
+				    <td><a class="btn btn-danger btn-sm" href="{% url 'cancel' b.id %}">Cancel</a></td>
+
+
+
+	            </tr>
+	            {% endfor %}
+	        </table>
+	    </div>			    
+	</div>
+
+
+
+
+	<div class="col-md-6">
+		<div class="card card-body">
+	        <table class="table table-sm">
+	            <tr>
+	            	<th>Doctor</th>
+
+	                <th>Examination</th>
+	            	<th>Investigation</th>
+	            	<th>Complaint</th>
+	            	
+	            	<th></th>
+	            	
+	            </tr>
+	            {% for p in patient %}
+	            <tr>
+	            	<td>Dr. {{p.docprof.profile.user.first_name}} {{p.docprof.profile.user.last_name}}</td><td>{{p.examination|truncatechars:15}}</td><td>{{p.investigation|truncatechars:15}}</td><td>{{p.complaint|truncatechars:15}}</td>
+	            	
+	            
+				    <td><a class="btn btn-info btn-sm" href="{% url 'patientdetail' p.id %}">View</a></td>
+
+
+
+	            </tr>
+	            {% endfor %}
+	        </table>
+	    </div>			    
+	</div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container my-4">
+{% include 'main/status.html' %}
+</div>
+
+<div class="jumbotron">
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-3 col-sm-3">
+			<button class="btn btn-success btn-block btn-lg">Add new State/Country</button>
+		</div>
+		<div class="col-md-3 col-sm-3">
+			<a href="{% url 'approval' %}" class="btn btn-danger btn-block btn-lg">Approve Status</a>
+		</div>
+		<div class="col-md-3 col-sm-3">
+			<button class="btn btn-warning btn-block btn-lg">Users Contact messages</button>
+		</div>
+		<div class="col-md-3 col-sm-3">
+			<a href="" class="btn btn-light btn-block btn-lg">Go to System Database</a>
+		</div>
+	</div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}

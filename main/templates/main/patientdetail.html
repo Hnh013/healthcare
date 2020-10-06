@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+
+
+
+<div class="jumbotron">
+<div class="container">
+
+<h2>Patient Diagnosis Report</h2>
+
+<p>
+
+Analysis by : <strong>Dr. {{patient.docprof.profile.user.first_name}} {{patient.docprof.profile.user.last_name}}</strong>
+
+</p>
+<p>
+Name of Patient: <strong>{{patient.name}}</strong>
+</p>
+<p>
+Place of Analysis : <strong>{{patient.docprof.address}}, {{patient.docprof.state}} , {{patient.docprof.country}}</strong>
+</p>
+<hr>
+
+
+
+<div>
+<h4>Complaints</h4><hr>
+<p>{{patient.complaint}}</p>
+</div>
+<div>
+  <h4>Investigations</h4><hr>
+<p>{{patient.investigation}}</p>
+</div>
+<div>
+  <h4>Examinations</h4><hr>
+<p>{{patient.examination}}</p>
+</div>
+  
+   
+</div>  
+</div>
+
+{% endblock %}
